@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #resumeOutput {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 500px;
+            display: none;
+        }
+
+        h2 {
+            color: #007BFF;
+        }
+
+        h3 {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume Generator</h1>
+    <form id="resumeForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br><br>
+        
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" required><br><br>
+        
+        <label for="experience">Experience:</label>
+        <textarea id="experience" rows="4" required></textarea><br><br>
+        
+        <label for="education">Education:</label>
+        <textarea id="education" rows="4" required></textarea><br><br>
+        
+        <button type="button" id="generateButton">Generate Resume</button>
+        <button type="button" id="downloadButton" style="display: none;">Download Resume</button>
+    </form>
+
+    <div id="resumeOutput">
+        <!-- The generated resume will be displayed here -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        document.getElementById('generateButton').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const experience = document.getElementById('experience').value;
+            const education = document.getElementById('education').value;
+
+            // Create a simple resume format
+            const resumeHTML = `
+                <h2>${name}</h2>
+                <p>Email: ${email}</p>
+                <p>Phone: ${phone}</p>
+                <h3>Experience:</h3>
+                <p>${experience}</p>
+                <h3>Education:</h3>
+                <p>${education}</p>
+            `;
+
+             // Display the generated resume
+             const resumeOutput = document.getElementById('resumeOutput');
+            resumeOutput.innerHTML = resumeHTML;
+            resumeOutput.style.display = 'block';
+
+            // Show the "Download Resume" button
+            document.getElementById('downloadButton').style.display = 'block';
+        });
+
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            const resumeHTML = document.getElementById('resumeOutput').innerHTML;
+            const pdf = new jsPDF();
+            
+            // Convert HTML to PDF
+            pdf.fromHTML(resumeHTML, 10, 10);
+            
+            // Download the PDF
+            pdf.save('resume.pdf');
+        });
+    </script>
+</body>
+</html>
